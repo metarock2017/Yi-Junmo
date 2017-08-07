@@ -11,3 +11,14 @@ emmmmmm
 一个就是在IndexServlet的doPost里
 
 另一个在util的llp里
+
+
+
+加解密实现在原来的主包里了
+
+
+
+关于获取Access-token     
+
+放在SendGet中    方法是从一个博客中学到的一个线程和阿里的fastjson写的
+
