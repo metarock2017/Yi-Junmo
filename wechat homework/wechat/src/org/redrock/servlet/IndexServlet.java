@@ -1,5 +1,4 @@
 package org.redrock.servlet;
-
 import org.redrock.util.*;
 import org.redrock.util.aes.*;
 import org.w3c.dom.Document;
@@ -22,7 +21,7 @@ import java.io.*;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-//配置路由
+
 @WebServlet(name = "IndexServlet", value = "/")
 public class IndexServlet extends HttpServlet {
     //post请求处理
@@ -112,6 +111,7 @@ public class IndexServlet extends HttpServlet {
                 builder.append(line);
             }
             String encryptMsg = builder.toString();
+
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             DocumentBuilder builder1 = factory.newDocumentBuilder();
             Document document = builder1.parse(
@@ -155,19 +155,7 @@ public class IndexServlet extends HttpServlet {
                 }
                 String Content = nMap.get("Content");
                 if (Content.equals("1")) {
-                    String xml = "<xml>" +
-                            "<ToUserName><![CDATA[%s]]></ToUserName>" +
-                            "<FromUserName><![CDATA[%s]]></FromUserName>" +
-                            "<CreateTime>%s</CreateTime>" +
-                            "<MsgType><![CDATA[%s]]></MsgType>" +
-                            "<Content><![CDATA[%s]]></Content>" +
-                            "</xml>";
-                    String toUser = nMap.get("FromUserName");
-                    String fromUser = nMap.get("ToUserName");
-                    String createTime = System.currentTimeMillis() / 1000 + "";
-                    String msgType = "text";
-                    String content = "hello";
-                    String res = String.format(xml, toUser, fromUser, createTime, msgType, content);
+                    String res = Support.SentRequest(nMap,"hello");
                     //加密发送
                     String res1 = AuthProcess.encryptMsg(request, res);
                     response.getWriter().println(res1);
@@ -176,26 +164,24 @@ public class IndexServlet extends HttpServlet {
                 }
             } else {
                 String Content = result.get("Content");
-                if (Content.equals("1")) {
-                    //xml格式化
-                    String xml = "<xml>" +
-                            "<ToUserName><![CDATA[%s]]></ToUserName>" +
-                            "<FromUserName><![CDATA[%s]]></FromUserName>" +
-                            "<CreateTime>%s</CreateTime>" +
-                            "<MsgType><![CDATA[%s]]></MsgType>" +
-                            "<Content><![CDATA[%s]]></Content>" +
-                            "</xml>";
-                    String toUser = result.get("FromUserName");
-                    String fromUser = result.get("ToUserName");
-                    String createTime = System.currentTimeMillis() / 1000 + "";//将原来13位的时间戳改为10位(api要求) 后面加上""将其转化为字符串
-                    String msgType = "text";
-                    String content = "hello";
-                    //格式化输出
-                    String res =String.format(xml, toUser, fromUser, createTime, msgType, content);
-                    //response相应输出
+                String MsgType = result.get("MsgType");
+                String Event = result.get("Event");
+                String EventKey = result.get("EventKey");
+                if (Content!=null && Content.equals("1")) {
+                    String res = Support.SentRequest(result,"hello");
                     response.getWriter().println(res);
+                } else if (MsgType.equals("event")&&Event.equals("CLICK")&&EventKey.equals("V1001_GOOD")){
+                    String res = Support.SentRequest(result,"Thank you!");
+                    response.getWriter().println(res);
+                } else if (MsgType.equals("event")&&Event.equals("CLICK")&&EventKey.equals("V1001_Start")) {
+                    // TODO:创建逻辑
+                } else if (MsgType.equals("event")&&Event.equals("CLICK")&&EventKey.equals("V1001_Join")) {
+                    //TODO:加入房间
+                } else if(MsgType.equals("event")&&Event.equals("CLICK")&&EventKey.equals("V1001_Exit")) {
+                    //TODO: 退出房间
                 } else {
-                    //不是1的时候要做的
+                    String res = Support.SentRequest(result,"QAQ Sorry, My IQ is too low. I don't know what you're talking about!");
+                    response.getWriter().println(res);
                 }
             }
 

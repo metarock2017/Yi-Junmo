@@ -8,7 +8,7 @@ import org.redrock.util.NetWorkHelper;
 public class TokenThread implements Runnable {
     public static String appId = Const.AppId;
     public static String appSecret= Const.AppSecret;
-    public static AccessToken accessToken = null;
+    public static AccessToken accessToken = new AccessToken();
     public void run(){
         while (true){
             try{
@@ -33,7 +33,7 @@ public class TokenThread implements Runnable {
      * 获取access_token
      * @return
      */
-    private AccessToken getAccessToken(){
+    public AccessToken getAccessToken(){
         NetWorkHelper netHelper = new NetWorkHelper();
         String Url = String.format("https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=%s&secret=%s",this.appId,this.appSecret);
         String result = netHelper.getHttpsResponse(Url,"");

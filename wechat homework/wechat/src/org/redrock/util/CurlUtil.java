@@ -5,7 +5,7 @@ import java.net.*;
 import java.util.Map;
 
 /**
- * 用于curl调用接口，传递参数与获取结果采用输入输出流
+ * Created by jx on 2017/7/21.
  */
 public class CurlUtil {
 
@@ -13,21 +13,12 @@ public class CurlUtil {
     private static final int DEF_READ_TIMEOUT = 30000;
     private static String userAgent =  "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/29.0.1547.66 Safari/537.36";
 
-
-    /**
-     *
-     * @param strUrl 请求地址
-     * @param params 请求参数
-     * @param method 请求方法
-     * @return
-     */
     public static String getContent(String strUrl, Map<String, Object> params, String method) {
         BufferedReader reader = null;
         BufferedWriter writer = null;
         HttpURLConnection conn = null;
         String paramStr = null;
         String result = null;
-        //有请求参数的话拼接成字符串
         if (params != null && !params.isEmpty()) {
             StringBuilder sb = new StringBuilder();
             for (Map.Entry i : params.entrySet()) {
@@ -90,6 +81,43 @@ public class CurlUtil {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+        }
+        return result;
+    }
+
+    public static String postData(String strUrl, String data) {
+        String result = null;
+        try {
+            URL url = new URL(strUrl);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("POST");
+            connection.setDoOutput(true);
+            connection.connect();
+            BufferedWriter writer = new BufferedWriter(
+                    new OutputStreamWriter(
+                            connection.getOutputStream(), "UTF-8"
+                    )
+            );
+            writer.write(data);
+            writer.flush();
+            BufferedReader reader = new BufferedReader(
+                    new InputStreamReader(
+                            connection.getInputStream(), "UTF-8"
+                    )
+            );
+            String line = null;
+            StringBuilder builder = new StringBuilder();
+            while ((line = reader.readLine()) != null) {
+                builder.append(line);
+            }
+            reader.close();
+            writer.close();
+            connection.disconnect();
+            result = builder.toString();
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
         }
         return result;
     }
