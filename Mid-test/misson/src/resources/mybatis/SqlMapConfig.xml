@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <!--
+        设置别名
+    -->
+
+
+    <!-- 和spring整合后 environments配置将废除-->
+    <!-- 引用db.properties配置文件 -->
+    <properties resource="db.properties"/>
+    <!--
+        development : 开发模式
+        work : 工作模式
+     -->
+    <typeAliases>
+        <!--
+            type:就是你要为那个类去别名的路径：包名+类型
+        　　alias：就是你自己取的别名
+         -->
+        <typeAlias type="org.redrock.summer.mybatis.pojo.Student" alias="student"/>
+    </typeAliases>
+
+    <environments default="development">
+        <environment id="development">
+            <!-- 使用jdbc事务管理-->
+            <!--标签<transactionManager type="JDBC"/>指明使用JDBC形式管理事务-->
+            <transactionManager type="JDBC" />
+            <!-- 数据库连接池-->
+            <!--标签<dataSource type="POOLED">指明使用Mybatis自带数据库连接池-->
+            <dataSource type="POOLED">
+                <property name="driver" value="com.mysql.jdbc.Driver" />
+                <property name="url" value="jdbc:mysql://localhost:3306/summer" />
+                <property name="username" value="root" />
+                <property name="password" value="130145162" />
+
+                <!--<property name="initialSize" value="0" />-->
+                <!--&lt;!&ndash; 连接池最大使用连接数量 &ndash;&gt;-->
+                <!--<property name="maxActive" value="20" />-->
+                <!--&lt;!&ndash; 连接池最大空闲 &ndash;&gt;-->
+                <!--<property name="maxIdle" value="20" />-->
+                <!--&lt;!&ndash; 连接池最小空闲 &ndash;&gt;-->
+                <!--<property name="minIdle" value="0" />-->
+                <!--&lt;!&ndash; 获取连接最大等待时间 &ndash;&gt;-->
+                <!--<property name="maxWait" value="60000" />-->
+            </dataSource>
+        </environment>
+    </environments>
+
+
+    <!--加载映射文件-->
+    <mappers>
+        <mapper resource="Student.xml" />
+        <!--<mapper resource="Student.xml"></mapper>-->
+    </mappers>
+</configuration>

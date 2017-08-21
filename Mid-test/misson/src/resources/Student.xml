@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--
+    namespace命名空间，作用就是对sql进行分化管理，可以理解为sql隔离
+    注意使用mapper代理开发，namespace有重要作用 这里先不使用代理开发 暂定用test代替
+-->
+
+<mapper namespace="test">
+    <!--
+        在映射文件中可以配置许多sql语句
+        id : 唯一标识映射文件的sql语句
+        这里每一条id对应的sql语句就会封装到mapperedStatement对象中,所以将id称为statement的id
+        parameterType是指输入参数的类型 即sql语句中待补全参数的类型
+        resultType是指获得数据后映射的java对象类型 （这里要写对象的全路径）
+        #{}相当于jdbc中的占位符
+        如果所输入参数是简单类型(java基础类型 如 int float string ....) #{}中的参数名可以是value或者其他任意名称
+        #{}
+    -->
+    <!-- 根据id获取用户信息 -->
+
+    <select id="findStudentById" parameterType="int" resultType="org.redrock.summer.mybatis.pojo.Student">
+        select * from student where id = #{id}
+    </select>
+
+    <!--
+        ${}代表的是拼接符号
+        如果传入的参数是简单类型 ${}里面只能使用value
+        但是有sql注入的隐患
+    -->
+    <select id="findStudentByName" parameterType="java.lang.String" resultType="student">
+        select * from student where name like '%${value}%'
+    </select>
+
+    <!--
+        添加学生
+        parameterType指顶输入的参数是pojo
+        #{}制定pojo的属性名 接收到pojo对象的属性值 mybatis获取到对象的属性值(通过OGNL)
+    -->
+    <insert id="addStudent" parameterType="org.redrock.summer.mybatis.pojo.Student">
+        insert into student (name,age,sex) values(#{name},#{age},#{sex})
+    </insert>
+</mapper>
+
