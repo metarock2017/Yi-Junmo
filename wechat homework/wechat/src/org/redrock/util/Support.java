@@ -37,10 +37,10 @@ public class Support {
         String content = text;
         //格式化输出
         String res =String.format(xml, toUser, fromUser, createTime, msgType, content);
+        System.out.println(res);
         //response相应输出
         return res;
     }
-
 
 
 

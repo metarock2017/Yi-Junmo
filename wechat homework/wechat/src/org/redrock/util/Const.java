@@ -8,4 +8,5 @@ public class Const {
     public static final String AppId ="wx66d5af9ee8f09c7d";// "wx1d34a57d34a06f05";
     public static final String AppSecret ="191cacbf3159550a31278d2e5ec832f8";//"9369e0d7f6134b674e5bbb5f6b16ebbf";
     public static final String Token = "0xFA";
+    public static final String ip = "127.0.0.1";
 }

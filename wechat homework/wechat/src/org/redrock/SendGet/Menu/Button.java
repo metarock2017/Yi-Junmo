@@ -161,7 +161,7 @@ public class Button {
 //        Object data = JSON.toJSON(m1);
         System.out.println(data);
         CurlUtil Url = new CurlUtil();
-        String  token =  Url.getContent("http://localhost:8080/123.jsp",null,"GET");
+        String  token =  Url.getContent("http://localhost:8080/eGlhb21vbW8=.jsp",null,"GET");
         String accessToken = token;
         String path = "https://api.weixin.qq.com/cgi-bin/menu/create?access_token=" + token;
         URL url = new URL(path);
