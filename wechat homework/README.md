@@ -1,3 +1,3 @@
 结构 
 
-![](.\wechat\1.jpg)
+![](wechat/1.jpg)
